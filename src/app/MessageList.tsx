@@ -1,7 +1,8 @@
 import { MessageListItem } from "./MessageListItem";
+import { Message } from "./Socket";
 
 type Props = {
-  messages: string[];
+  messages: Message[];
 };
 
 export const MessageList = (props: Props) => {
