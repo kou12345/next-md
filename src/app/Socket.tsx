@@ -4,13 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { MessageForm } from "./MessageForm";
 import { MessageList } from "./MessageList";
 
-type Props = {
-  userId: string;
-};
-
 export type Message = {
   message: string;
   userId: string;
+  userName: string;
+};
+
+type Props = {
+  userId: string;
+  userName: string;
 };
 
 export const Socket = (props: Props) => {
@@ -55,7 +57,9 @@ export const Socket = (props: Props) => {
   // メッセージをサーバーに送信する関数
   const sendMessage = (message: string) => {
     if (socketRef.current) {
-      socketRef.current.send(JSON.stringify({ message, userId: props.userId }));
+      socketRef.current.send(
+        JSON.stringify({ message, userId: props.userId, userName: props.userName })
+      );
     } else {
       console.error("WebSocket instance is not ready.");
     }

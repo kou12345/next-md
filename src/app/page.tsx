@@ -8,7 +8,7 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-      <Socket userId={user?.id as string} />
+      <Socket userId={user?.id as string} userName={user?.username as string} />
     </div>
   );
 }
