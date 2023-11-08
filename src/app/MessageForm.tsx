@@ -27,7 +27,7 @@ export const MessageForm = (props: Props) => {
           onChange={(event) => setMessage(event.target.value)}
           value={message}
         />
-        <button className="btn btn-active btn-primary">Primary</button>
+        <button className="btn btn-active btn-primary mx-4">Primary</button>
       </form>
     </div>
   );
