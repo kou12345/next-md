@@ -14,7 +14,6 @@ export type Message = {
 };
 
 export const Socket = (props: Props) => {
-  console.log("userId: ", props.userId);
   const socketRef = useRef<WebSocket | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
 
@@ -33,11 +32,8 @@ export const Socket = (props: Props) => {
     };
 
     ws.onmessage = (event) => {
-      console.log("Message from server:", event.data);
-      // event.dataがJSON形式の文字列なので、JSON.parse()でオブジェクトに変換
-
       const message = JSON.parse(event.data) as Message;
-      console.log("message: ", message);
+      // console.log("message: ", message);
 
       setMessages((prevMessages) => [...prevMessages, message]);
     };
