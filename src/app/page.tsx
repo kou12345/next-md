@@ -1,16 +1,22 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { MessageForm } from "./MessageForm";
+import { MessageList } from "./MessageList";
 
-const Home = () => {
+export default function Home() {
   const socketRef = useRef<WebSocket | null>(null);
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    // useRefを使ってWebSocketインスタンスを保持する
-    socketRef.current = new WebSocket("ws://localhost:8080");
+    const existingSocket = socketRef.current;
+    if (existingSocket) {
+      existingSocket.close();
+    }
 
-    const ws = socketRef.current;
+    // 新しいWebSocketインスタンスを作成
+    const ws = new WebSocket("ws://localhost:8080");
+    socketRef.current = ws;
 
     ws.onopen = () => {
       console.log("Connected to the WebSocket server");
@@ -37,9 +43,10 @@ const Home = () => {
 
   // メッセージをサーバーに送信する関数
   const sendMessage = (message: string) => {
-    const ws = socketRef.current;
-    if (ws) {
-      ws.send(message);
+    if (socketRef.current) {
+      socketRef.current.send(message);
+    } else {
+      console.error("WebSocket instance is not ready.");
     }
   };
 
@@ -49,12 +56,9 @@ const Home = () => {
       <button onClick={() => sendMessage("Hello Server!")}>Send Message</button>
       <div>
         <h2>Messages:</h2>
-        {messages.map((message, index) => (
-          <div key={index}>{message}</div>
-        ))}
+        <MessageList messages={messages} />
       </div>
+      <MessageForm sendMessage={sendMessage} />
     </div>
   );
-};
-
-export default Home;
+}
