@@ -16,13 +16,13 @@ export const MessageForm = (props: Props) => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="message"
           placeholder="Type here"
-          className="input input-bordered w-full max-w-xs"
+          className="input input-bordered w-96"
           required
           onChange={(event) => setMessage(event.target.value)}
           value={message}

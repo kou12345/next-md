@@ -67,10 +67,12 @@ export const Socket = (props: Props) => {
 
   return (
     <div className="w-4/5 flex justify-center items-center">
-      <div className="justify-center">
+      <div>
         <MessageList messages={messages} />
         <div>
-          <MessageForm sendMessage={sendMessage} />
+          <div className="my-6">
+            <MessageForm sendMessage={sendMessage} />
+          </div>
         </div>
       </div>
     </div>
