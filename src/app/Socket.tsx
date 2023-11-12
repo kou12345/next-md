@@ -1,5 +1,7 @@
 "use client";
 
+import { getChatHistory } from "@/server/chatHistory";
+import { getUserName } from "@/server/user";
 import { useEffect, useRef, useState } from "react";
 import { MessageForm } from "./MessageForm";
 import { MessageList } from "./MessageList";
@@ -11,6 +13,7 @@ export type Message = {
 };
 
 type Props = {
+  roomId: string;
   userId: string;
   userName: string;
 };
@@ -20,6 +23,28 @@ export const Socket = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
+    // メッセージの履歴を取得する
+    const fetchMessages = async () => {
+      const result = await getChatHistory(Number(props.roomId));
+      console.log(result);
+
+      if (result) {
+        const messagesWithUser = await Promise.all(
+          result.map(async (message) => {
+            const userName = await getUserName(message.userId as string);
+            return {
+              message: message.messageText as string,
+              userId: message.userId as string,
+              userName: userName as string, // ここでuserNameを取得
+            };
+          })
+        );
+        setMessages(messagesWithUser);
+      }
+    };
+
+    fetchMessages();
+
     const existingSocket = socketRef.current;
     if (existingSocket) {
       existingSocket.close();
@@ -31,11 +56,19 @@ export const Socket = (props: Props) => {
 
     ws.onopen = () => {
       console.log("Connected to the WebSocket server");
+      // ルーム参加のメッセージを送信
+      ws.send(
+        JSON.stringify({
+          type: "joinRoom",
+          roomId: props.roomId,
+          userId: props.userId,
+        })
+      );
     };
 
     ws.onmessage = (event) => {
       const message = JSON.parse(event.data) as Message;
-      // console.log("message: ", message);
+      console.log("message: ", message);
 
       setMessages((prevMessages) => [...prevMessages, message]);
     };
@@ -52,13 +85,19 @@ export const Socket = (props: Props) => {
     return () => {
       ws.close();
     };
-  }, []);
+  }, [props.roomId, props.userId]);
 
   // メッセージをサーバーに送信する関数
   const sendMessage = (message: string) => {
     if (socketRef.current) {
       socketRef.current.send(
-        JSON.stringify({ message, userId: props.userId, userName: props.userName })
+        JSON.stringify({
+          type: "message",
+          roomId: props.roomId,
+          userId: props.userId,
+          userName: props.userName,
+          message,
+        })
       );
     } else {
       console.error("WebSocket instance is not ready.");
