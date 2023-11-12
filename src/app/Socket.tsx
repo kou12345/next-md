@@ -2,7 +2,7 @@
 
 import { getChatHistory } from "@/server/chatHistory";
 import { getUserName } from "@/server/user";
-import { useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { MessageForm } from "./MessageForm";
 import { MessageList } from "./MessageList";
 
@@ -107,7 +107,9 @@ export const Socket = (props: Props) => {
   return (
     <div className="w-4/5 flex justify-center items-center">
       <div>
-        <MessageList messages={messages} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <MessageList messages={messages} />
+        </Suspense>
         <div>
           <div className="my-6">
             <MessageForm sendMessage={sendMessage} />
