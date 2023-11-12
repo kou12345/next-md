@@ -1,8 +1,8 @@
 "use client";
 
+import { Message } from "@/types/types";
 import { useUser } from "@clerk/nextjs";
 import { MessageListItem } from "./MessageListItem";
-import { Message } from "./Socket";
 
 type Props = {
   messages: Message[];
