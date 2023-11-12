@@ -10,7 +10,7 @@ export const ChatRoomList = async () => {
       <ul>
         {ChatRoomList?.map((chatRoom) => (
           <li key={chatRoom.id}>
-            <Link href={`/chatRoom/${chatRoom.id}`}>{chatRoom.roomName}</Link>
+            <Link href={`/chatrooms/${chatRoom.id}`}>{chatRoom.roomName}</Link>
           </li>
         ))}
       </ul>
