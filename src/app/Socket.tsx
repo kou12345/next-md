@@ -1,16 +1,9 @@
 "use client";
 
-import { getChatHistory } from "@/server/chatHistory";
-import { getUserName } from "@/server/user";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Message } from "@/types/types";
+import { useEffect, useRef, useState } from "react";
+import { ChatHistory } from "./ChatHistory";
 import { MessageForm } from "./MessageForm";
-import { MessageList } from "./MessageList";
-
-export type Message = {
-  message: string;
-  userId: string;
-  userName: string;
-};
 
 type Props = {
   roomId: string;
@@ -23,28 +16,6 @@ export const Socket = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
-    // メッセージの履歴を取得する
-    const fetchMessages = async () => {
-      const result = await getChatHistory(Number(props.roomId));
-      console.log(result);
-
-      if (result) {
-        const messagesWithUser = await Promise.all(
-          result.map(async (message) => {
-            const userName = await getUserName(message.userId as string);
-            return {
-              message: message.messageText as string,
-              userId: message.userId as string,
-              userName: userName as string, // ここでuserNameを取得
-            };
-          })
-        );
-        setMessages(messagesWithUser);
-      }
-    };
-
-    fetchMessages();
-
     const existingSocket = socketRef.current;
     if (existingSocket) {
       existingSocket.close();
@@ -107,9 +78,7 @@ export const Socket = (props: Props) => {
   return (
     <div className="w-4/5 flex justify-center items-center">
       <div>
-        <Suspense fallback={<div>Loading...</div>}>
-          <MessageList messages={messages} />
-        </Suspense>
+        <ChatHistory roomId={Number(props.roomId)} />
         <div>
           <div className="my-6">
             <MessageForm sendMessage={sendMessage} />
