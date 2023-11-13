@@ -1,9 +1,10 @@
 "use client";
 
+import { getChatHistory } from "@/server/chatHistory";
 import { Message } from "@/types/types";
 import { useEffect, useRef, useState } from "react";
-import { ChatHistory } from "./ChatHistory";
 import { MessageForm } from "./MessageForm";
+import { MessageList } from "./MessageList";
 
 type Props = {
   roomId: string;
@@ -16,6 +17,23 @@ export const Socket = (props: Props) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
+    const fetchMessages = async () => {
+      const result = await getChatHistory(Number(props.roomId));
+      console.log("result: ", result);
+      if (result) {
+        result.forEach((message) => {
+          const newMessage: Message = {
+            message: message.messageText,
+            userId: message.userId,
+            userName: message.userName,
+          };
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        });
+      }
+    };
+
+    fetchMessages();
+
     const existingSocket = socketRef.current;
     if (existingSocket) {
       existingSocket.close();
@@ -38,7 +56,14 @@ export const Socket = (props: Props) => {
     };
 
     ws.onmessage = (event) => {
-      const message = JSON.parse(event.data) as Message;
+      console.log("Received:", event.data);
+      const resultJson = JSON.parse(event.data);
+      console.log("resultJson: ", resultJson);
+      const message: Message = {
+        message: resultJson.message,
+        userId: resultJson.userId,
+        userName: resultJson.userName,
+      };
       console.log("message: ", message);
 
       setMessages((prevMessages) => [...prevMessages, message]);
@@ -78,7 +103,8 @@ export const Socket = (props: Props) => {
   return (
     <div className="w-4/5 flex justify-center items-center">
       <div>
-        <ChatHistory roomId={Number(props.roomId)} />
+        {/* <ChatHistory roomId={Number(props.roomId)} /> */}
+        <MessageList messages={messages} />
         <div>
           <div className="my-6">
             <MessageForm sendMessage={sendMessage} />
