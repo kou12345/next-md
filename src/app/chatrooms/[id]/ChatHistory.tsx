@@ -11,7 +11,7 @@ export const ChatHistory = (props: Props) => {
   const messages = useChatHistory(props.roomId);
 
   if (!messages) {
-    return null;
+    return <div>Loading...</div>;
   }
 
   return <MessageList messages={messages} />;
