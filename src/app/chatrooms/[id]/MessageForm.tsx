@@ -16,8 +16,8 @@ export const MessageForm = (props: Props) => {
   };
 
   return (
-    <div className="w-full">
-      <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="col-start-3 col-span-6">
+      <div className="flex">
         <input
           type="text"
           name="message"
@@ -27,8 +27,8 @@ export const MessageForm = (props: Props) => {
           onChange={(event) => setMessage(event.target.value)}
           value={message}
         />
-        <button className="btn btn-active btn-primary mx-4">Primary</button>
-      </form>
-    </div>
+        <button className="btn btn-active btn-primary">Primary</button>
+      </div>
+    </form>
   );
 };

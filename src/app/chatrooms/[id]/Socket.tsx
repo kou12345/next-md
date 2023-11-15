@@ -101,16 +101,9 @@ export const Socket = (props: Props) => {
   };
 
   return (
-    <div className="w-4/5 flex justify-center items-center">
-      <div>
-        {/* <ChatHistory roomId={Number(props.roomId)} /> */}
-        <MessageList messages={messages} />
-        <div>
-          <div className="my-6">
-            <MessageForm sendMessage={sendMessage} />
-          </div>
-        </div>
-      </div>
+    <div className="">
+      <MessageList messages={messages} />
+      <MessageForm sendMessage={sendMessage} />
     </div>
   );
 };
