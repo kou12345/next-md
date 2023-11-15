@@ -8,7 +8,7 @@ export default async function Home({ params }: { params: { id: string } }) {
   console.log(id);
 
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="col-start-4 col-span-6 h-screen">
       <Socket roomId={id} userId={user?.id as string} userName={user?.username as string} />
     </div>
   );

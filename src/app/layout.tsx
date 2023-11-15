@@ -16,8 +16,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <ClerkProvider>
       <html lang="en" className="dark">
         <body className={inter.className}>
-          <Navbar />
-          {children}
+          <div className="container mx-auto max-h-screen grid grid-cols-12 gap-4">
+            <div className="col-start-1 col-span-full">
+              <Navbar />
+            </div>
+            {children}
+          </div>
         </body>
       </html>
     </ClerkProvider>
