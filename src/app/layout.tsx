@@ -1,10 +1,9 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import { Navbar } from "./Navbar";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <ClerkProvider>
       <html lang="en" className="dark">
-        <body className={inter.className}>
+        <body className="overflow-y-hidden">
           <div className="container mx-auto max-h-screen grid grid-cols-12 gap-4">
             <div className="col-start-1 col-span-full">
               <Navbar />

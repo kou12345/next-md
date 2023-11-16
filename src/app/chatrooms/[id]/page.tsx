@@ -5,7 +5,6 @@ export default async function Home({ params }: { params: { id: string } }) {
   const user = await currentUser();
 
   const id = params.id;
-  console.log(id);
 
   return (
     <div className="col-start-4 col-span-6 h-screen">

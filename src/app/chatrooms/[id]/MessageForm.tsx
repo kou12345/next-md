@@ -16,7 +16,7 @@ export const MessageForm = (props: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="col-start-3 col-span-6">
+    <form onSubmit={handleSubmit} className="fixed bottom-0">
       <div className="flex">
         <input
           type="text"
