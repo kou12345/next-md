@@ -19,7 +19,6 @@ export const Socket = (props: Props) => {
   useEffect(() => {
     const fetchMessages = async () => {
       const result = await getChatHistory(Number(props.roomId));
-      console.log("result: ", result);
       if (result) {
         result.forEach((message) => {
           const newMessage: Message = {
@@ -56,15 +55,12 @@ export const Socket = (props: Props) => {
     };
 
     ws.onmessage = (event) => {
-      console.log("Received:", event.data);
       const resultJson = JSON.parse(event.data);
-      console.log("resultJson: ", resultJson);
       const message: Message = {
         message: resultJson.message,
         userId: resultJson.userId,
         userName: resultJson.userName,
       };
-      console.log("message: ", message);
 
       setMessages((prevMessages) => [...prevMessages, message]);
     };
@@ -101,8 +97,12 @@ export const Socket = (props: Props) => {
   };
 
   return (
-    <div className="">
-      <MessageList messages={messages} />
+    <div>
+      <div className="my-12 h-screen">
+        <div className="h-4/5">
+          <MessageList messages={messages} />
+        </div>
+      </div>
       <MessageForm sendMessage={sendMessage} />
     </div>
   );

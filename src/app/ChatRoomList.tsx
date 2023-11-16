@@ -5,7 +5,6 @@ import { ChatRoomListItem } from "./ChatRoomListItem";
 
 export const ChatRoomList = async () => {
   const ChatRoomList = await getChatRoomList();
-  console.log(ChatRoomList);
   return (
     <div>
       <div className="text-center text-lg">チャットルーム一覧</div>
